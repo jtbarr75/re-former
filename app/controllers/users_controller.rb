@@ -1,4 +1,9 @@
 class UsersController < ApplicationController
+
+  def index
+    @users = User.all
+  end
+
   def new
     @user = User.new
   end
@@ -9,9 +14,31 @@ class UsersController < ApplicationController
       flash[:notice] = "User created!"
       redirect_to root_path
     else
-      flash[:notice] = "Failed to create user!"
+      flash[:notice] = @user.errors.full_messages.join(", ")
       render :new
     end
+  end
+
+  def show
+    @user = User.find(params[:id])
+  end
+
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      flash[:notice] = "User created!"
+      redirect_to root_path
+    else
+      flash[:notice] = @user.errors.full_messages.join(", ")
+      render :edit
+    end
+  end
+
+  def destroy
   end
 
   private
